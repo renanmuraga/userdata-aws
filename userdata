@@ -1,0 +1,9 @@
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd.service
+systemctl enable httpd.service
+EC2_INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+EC2_AVAIL_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
+echo "<h1>Renan Muraga - Webserver 1 - Instance ID: $EC2_INSTANCE_ID | Hostame: $(hostname -f) na AZ $EC2_AVAIL_ZONE </h1>" > /var/www/html/index.html
